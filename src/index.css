@@ -1,0 +1,131 @@
+@import "@fontsource-variable/inter";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 6%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 6%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 6%;
+    --primary: 161 94% 30%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 6% 12%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 44%;
+    --accent: 240 5% 96%;
+    --accent-foreground: 240 6% 12%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 161 94% 30%;
+    --radius: 0.75rem;
+    --sidebar-background: 0 0% 99%;
+    --sidebar-foreground: 240 5% 30%;
+    --sidebar-primary: 161 94% 30%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 240 6% 12%;
+    --sidebar-border: 240 6% 92%;
+    --sidebar-ring: 161 94% 30%;
+  }
+
+  .dark {
+    --background: 240 8% 6%;
+    --foreground: 0 0% 96%;
+    --card: 240 7% 9%;
+    --card-foreground: 0 0% 96%;
+    --popover: 240 7% 9%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 158 84% 42%;
+    --primary-foreground: 240 10% 6%;
+    --secondary: 240 5% 14%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 240 5% 14%;
+    --muted-foreground: 240 4% 60%;
+    --accent: 240 5% 14%;
+    --accent-foreground: 0 0% 96%;
+    --destructive: 0 72% 56%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 5% 16%;
+    --input: 240 5% 18%;
+    --ring: 158 84% 42%;
+    --sidebar-background: 240 8% 7%;
+    --sidebar-foreground: 240 4% 70%;
+    --sidebar-primary: 158 84% 42%;
+    --sidebar-primary-foreground: 240 10% 6%;
+    --sidebar-accent: 240 5% 14%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 240 5% 14%;
+    --sidebar-ring: 158 84% 42%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.011em;
+  }
+  ::selection {
+    @apply bg-primary/20;
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-border;
+  }
+}
+
+/* Launch splash animation */
+@keyframes splash-pop {
+  0% { transform: scale(0.4); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes splash-rise {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.splash-logo { animation: splash-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.splash-title { animation: splash-rise 0.5s ease-out 0.25s both; }
+.splash-byline { animation: splash-rise 0.5s ease-out 0.45s both; }
+
+/* Mobile / native-app fit: never let the page scroll horizontally,
+   and hide desktop-style scrollbars on touch screens (content still
+   scrolls normally by touch). */
+html, body, #root {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+@media (max-width: 1023.98px), (pointer: coarse) {
+  * {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  *::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+  }
+}
