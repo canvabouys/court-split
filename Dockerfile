@@ -1,5 +1,8 @@
 # ---------- build ----------
-FROM node:20-alpine AS build
+# Node 22: required by @capacitor/cli (mobile tooling in devDependencies).
+# The runtime server itself is fine on Node 20+, but keeping one version
+# avoids EBADENGINE warnings and lockfile conflicts.
+FROM node:22-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci
@@ -7,7 +10,7 @@ COPY . .
 RUN npm run build
 
 # ---------- runtime ----------
-FROM node:20-alpine
+FROM node:22-alpine
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app/package.json ./
