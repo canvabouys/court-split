@@ -1,0 +1,16 @@
+# Render Blueprint — auto-configures the CourtSplit web service.
+# Render picks this up automatically when you create a service from the repo.
+services:
+  - type: web
+    name: courtsplit
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: node dist/boot.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # set this in the Render dashboard (mysql://user:pass@host:3306/dbname)
+      - key: APP_SECRET
+        generateValue: true # random session-cookie signing secret
