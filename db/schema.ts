@@ -1,7 +1,6 @@
 import {
   mysqlTable,
   mysqlEnum,
-  serial,
   varchar,
   text,
   timestamp,
@@ -12,8 +11,12 @@ import {
   uniqueIndex,
 } from "drizzle-orm/mysql-core";
 
+/* ------------------------------------------------------------------ */
+/* Users                                                              */
+/* ------------------------------------------------------------------ */
+
 export const users = mysqlTable("users", {
-  id: serial("id").primaryKey(),
+  id: bigint("id", { mode: "number", unsigned: true }).autoincrement().primaryKey(),
   unionId: varchar("unionId", { length: 255 }).notNull().unique(),
   name: varchar("name", { length: 255 }),
   email: varchar("email", { length: 320 }),
@@ -32,13 +35,13 @@ export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
 /* ------------------------------------------------------------------ */
-/* Groups                                                              */
+/* Groups                                                             */
 /* ------------------------------------------------------------------ */
 
 export const groups = mysqlTable(
   "groups",
   {
-    id: serial("id").primaryKey(),
+    id: bigint("id", { mode: "number", unsigned: true }).autoincrement().primaryKey(),
     name: varchar("name", { length: 120 }).notNull(),
     sport: varchar("sport", { length: 40 }).notNull().default("Badminton"),
     description: text("description"),
@@ -55,7 +58,7 @@ export type Group = typeof groups.$inferSelect;
 export const groupMembers = mysqlTable(
   "group_members",
   {
-    id: serial("id").primaryKey(),
+    id: bigint("id", { mode: "number", unsigned: true }).autoincrement().primaryKey(),
     groupId: bigint("groupId", { mode: "number", unsigned: true }).notNull(),
     userId: bigint("userId", { mode: "number", unsigned: true }).notNull(),
     role: mysqlEnum("role", ["owner", "admin", "member"])
@@ -72,13 +75,13 @@ export const groupMembers = mysqlTable(
 export type GroupMember = typeof groupMembers.$inferSelect;
 
 /* ------------------------------------------------------------------ */
-/* Bookings                                                            */
+/* Bookings                                                           */
 /* ------------------------------------------------------------------ */
 
 export const bookings = mysqlTable(
   "bookings",
   {
-    id: serial("id").primaryKey(),
+    id: bigint("id", { mode: "number", unsigned: true }).autoincrement().primaryKey(),
     groupId: bigint("groupId", { mode: "number", unsigned: true }).notNull(),
     sport: varchar("sport", { length: 40 }).notNull(),
     venue: varchar("venue", { length: 160 }).notNull(),
@@ -110,7 +113,7 @@ export type Booking = typeof bookings.$inferSelect;
 export const attendance = mysqlTable(
   "attendance",
   {
-    id: serial("id").primaryKey(),
+    id: bigint("id", { mode: "number", unsigned: true }).autoincrement().primaryKey(),
     bookingId: bigint("bookingId", { mode: "number", unsigned: true }).notNull(),
     userId: bigint("userId", { mode: "number", unsigned: true }).notNull(),
     attended: boolean("attended").default(true).notNull(),
@@ -126,14 +129,14 @@ export const attendance = mysqlTable(
 export type Attendance = typeof attendance.$inferSelect;
 
 /* ------------------------------------------------------------------ */
-/* Expenses                                                            */
+/* Expenses                                                           */
 /* ------------------------------------------------------------------ */
 
 /** Money actually paid up-front for a booking (one or more payers). */
 export const contributions = mysqlTable(
   "contributions",
   {
-    id: serial("id").primaryKey(),
+    id: bigint("id", { mode: "number", unsigned: true }).autoincrement().primaryKey(),
     bookingId: bigint("bookingId", { mode: "number", unsigned: true }).notNull(),
     userId: bigint("userId", { mode: "number", unsigned: true }).notNull(),
     amountPaise: int("amountPaise").notNull(),
@@ -147,7 +150,7 @@ export type Contribution = typeof contributions.$inferSelect;
 export const splits = mysqlTable(
   "splits",
   {
-    id: serial("id").primaryKey(),
+    id: bigint("id", { mode: "number", unsigned: true }).autoincrement().primaryKey(),
     bookingId: bigint("bookingId", { mode: "number", unsigned: true }).notNull(),
     userId: bigint("userId", { mode: "number", unsigned: true }).notNull(),
     amountPaise: int("amountPaise").notNull(),
@@ -163,13 +166,13 @@ export const splits = mysqlTable(
 export type Split = typeof splits.$inferSelect;
 
 /* ------------------------------------------------------------------ */
-/* Payments                                                            */
+/* Payments                                                           */
 /* ------------------------------------------------------------------ */
 
 export const payments = mysqlTable(
   "payments",
   {
-    id: serial("id").primaryKey(),
+    id: bigint("id", { mode: "number", unsigned: true }).autoincrement().primaryKey(),
     groupId: bigint("groupId", { mode: "number", unsigned: true }).notNull(),
     fromUserId: bigint("fromUserId", { mode: "number", unsigned: true }).notNull(),
     toUserId: bigint("toUserId", { mode: "number", unsigned: true }).notNull(),
@@ -194,13 +197,13 @@ export const payments = mysqlTable(
 export type Payment = typeof payments.$inferSelect;
 
 /* ------------------------------------------------------------------ */
-/* Notifications & activity                                            */
+/* Notifications & activity                                           */
 /* ------------------------------------------------------------------ */
 
 export const notifications = mysqlTable(
   "notifications",
   {
-    id: serial("id").primaryKey(),
+    id: bigint("id", { mode: "number", unsigned: true }).autoincrement().primaryKey(),
     userId: bigint("userId", { mode: "number", unsigned: true }).notNull(),
     type: varchar("type", { length: 40 }).notNull(),
     title: varchar("title", { length: 160 }).notNull(),
@@ -217,7 +220,7 @@ export type Notification = typeof notifications.$inferSelect;
 export const activityLogs = mysqlTable(
   "activity_logs",
   {
-    id: serial("id").primaryKey(),
+    id: bigint("id", { mode: "number", unsigned: true }).autoincrement().primaryKey(),
     groupId: bigint("groupId", { mode: "number", unsigned: true }),
     userId: bigint("userId", { mode: "number", unsigned: true }).notNull(),
     action: varchar("action", { length: 60 }).notNull(),
